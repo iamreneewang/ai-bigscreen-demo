@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Logistics Bigscreen Demo</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <script src="https://unpkg.com/globe.gl@2.32.0/dist/globe.gl.min.js"></script>
+</head>
+<body>
+  <main class="screen" id="screen">
+    <canvas id="networkCanvas" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">DEMO</div>
+        <div>
+          <h1>AI Logistics Control Tower</h1>
+          <p>Singapore operations · air / ocean / warehouse / last mile</p>
+        </div>
+      </div>
+
+      <section class="top-kpis" aria-label="Operations summary">
+        <article>
+          <span>Completion</span>
+          <strong id="kpiComplete">94.2%</strong>
+        </article>
+        <article>
+          <span>Total Jobs</span>
+          <strong id="kpiJobs">1,287</strong>
+        </article>
+        <article>
+          <span>POD Fail</span>
+          <strong id="kpiFail">74</strong>
+        </article>
+        <article>
+          <span>Warehouse</span>
+          <strong id="kpiWarehouse">78%</strong>
+        </article>
+      </section>
+
+      <div class="top-actions">
+        <button class="icon-button" type="button" id="refreshBtn" title="Refresh live data">Refresh</button>
+        <button class="icon-button primary" type="button" id="fullscreenBtn" title="Enter full screen">Full Screen</button>
+        <div class="clock">
+          <span id="clockTime">--:--:--</span>
+          <small id="clockDate">----/--/--</small>
+        </div>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="left-panel panel">
+        <div class="panel-title">
+          <span>AI Actions</span>
+          <b>Operational Assistant</b>
+        </div>
+
+        <div class="action-grid">
+          <button type="button" data-scenario="flight">
+            <span>Flight Delay</span>
+            <strong>Replan affected cargo</strong>
+          </button>
+          <button type="button" data-scenario="weather">
+            <span>Weather Risk</span>
+            <strong>Adjust outbound schedule</strong>
+          </button>
+          <button type="button" data-scenario="provider">
+            <span>Provider Drop</span>
+            <strong>Switch pickup window</strong>
+          </button>
+          <button type="button" data-scenario="warehouse">
+            <span>Warehouse Aging</span>
+            <strong>Prioritize stuck pallets</strong>
+          </button>
+        </div>
+
+        <div class="panel-title compact">
+          <span>Real-time Alerts</span>
+          <b id="alertCount">4 Active</b>
+        </div>
+        <div class="alerts" id="alertsList"></div>
+
+        <div class="panel-title compact">
+          <span>24H Throughput</span>
+          <b>Jobs / Hour</b>
+        </div>
+        <div class="chart-box" id="throughputChart"></div>
+      </aside>
+
+      <section class="map-stage panel">
+        <div class="stage-header">
+          <div>
+            <span>Live Logistics Map</span>
+            <h2 id="stageTitle">Singapore Network Overview</h2>
+          </div>
+          <div class="map-legend">
+            <i class="ok"></i> Normal
+            <i class="warn"></i> Watch
+            <i class="danger"></i> Critical
+          </div>
+        </div>
+
+        <div class="map-wrap">
+          <div class="globe-panel" id="globePanel"></div>
+          <div class="globe-hint">Drag to rotate · click airport / route</div>
+          <div class="globe-insights">
+            <div>
+              <span>Active Routes</span>
+              <strong>5</strong>
+            </div>
+            <div>
+              <span>Risk Nodes</span>
+              <strong>3</strong>
+            </div>
+            <div>
+              <span>Focus Hub</span>
+              <strong id="globeFocus">Changi</strong>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <aside class="right-panel panel">
+        <div class="panel-title">
+          <span>Selected View</span>
+          <b id="detailStatus">Air Import</b>
+        </div>
+
+        <section class="detail-card">
+          <span id="detailLabel">Current Bottleneck</span>
+          <h2 id="detailTitle">SQ101 ETA changed</h2>
+          <p id="detailDesc">28 shipments will miss the original handover window unless the warehouse receiving plan is adjusted.</p>
+        </section>
+
+        <div class="metric-grid" id="detailMetrics">
+          <article><span>Impacted Jobs</span><strong>28</strong></article>
+          <article><span>SLA Risk</span><strong>High</strong></article>
+          <article><span>Delay ETA</span><strong>+145m</strong></article>
+          <article><span>AI Confidence</span><strong>91%</strong></article>
+        </div>
+
+        <div class="panel-title compact">
+          <span>Warehouse Aging</span>
+          <b>Priority Queue</b>
+        </div>
+        <div class="aging-list" id="agingList"></div>
+
+        <div class="panel-title compact">
+          <span>Risk Mix</span>
+          <b>Live</b>
+        </div>
+        <div class="chart-box small" id="riskChart"></div>
+      </aside>
+    </section>
+
+    <footer class="bottom-band panel">
+      <section class="ticker">
+        <span>LIVE FEED</span>
+        <div id="feedText">AI re-ranked ITR Import aging queue and found 15 pallets above four days.</div>
+      </section>
+      <section class="bottom-charts">
+        <div class="lane-table" id="laneTable"></div>
+        <div class="provider-chart" id="providerChart"></div>
+      </section>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
