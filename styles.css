@@ -102,7 +102,7 @@ button {
 }
 
 .brand-mark {
-  width: 62px;
+  width: 78px;
   height: 52px;
   display: grid;
   place-items: center;
@@ -488,7 +488,7 @@ button {
   bottom: 14px;
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(3, 94px);
+  grid-template-columns: repeat(3, 116px);
   gap: 8px;
 }
 
@@ -504,6 +504,7 @@ button {
   color: var(--muted);
   font-size: 9px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .globe-insights strong {
@@ -512,6 +513,7 @@ button {
   color: var(--yellow);
   font-size: 16px;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .globe-marker {
