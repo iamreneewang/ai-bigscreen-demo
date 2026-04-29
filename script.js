@@ -31,6 +31,8 @@ let globeChart;
 let charts = {};
 let feedIndex = 0;
 let feedTimer;
+let networkFrame;
+let lastNetworkDraw = 0;
 
 const feedTemplates = [
   { time: "18:42", type: "AIR IMPORT", text: "SQ101 ETA drift · <em>28 shipments</em> under SLA watch · reserve receiving slot at Jurong DC." },
@@ -401,7 +403,7 @@ function resizeCanvas() {
   canvas.style.height = `${height}px`;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-  particles = Array.from({ length: 62 }, () => ({
+  particles = Array.from({ length: 30 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
     vx: (Math.random() - 0.5) * 0.24,
@@ -410,7 +412,11 @@ function resizeCanvas() {
   }));
 }
 
-function drawNetwork() {
+function drawNetwork(now = 0) {
+  networkFrame = requestAnimationFrame(drawNetwork);
+  if (now - lastNetworkDraw < 66) return;
+  lastNetworkDraw = now;
+
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = "rgba(101, 240, 219, 0.52)";
   ctx.strokeStyle = "rgba(101, 240, 219, 0.1)";
@@ -444,7 +450,6 @@ function drawNetwork() {
     }
   });
 
-  requestAnimationFrame(drawNetwork);
 }
 
 function initGlobe() {
@@ -477,7 +482,7 @@ function initGlobe() {
     .arcDashLength(0.42)
     .arcDashGap(1.25)
     .arcDashInitialGap(() => Math.random())
-    .arcDashAnimateTime(2600)
+    .arcDashAnimateTime(5200)
     .arcLabel((arc) => `<b>${arc.name}</b><br>${arc.from} to ${arc.to}`)
     .onArcClick((arc) => setDetail(arc.focus))
     .ringsData(globePoints.filter((point) => point.status !== "normal"))
@@ -498,7 +503,7 @@ function initGlobe() {
     .labelIncludeDot(true);
 
   globeChart.controls().autoRotate = true;
-  globeChart.controls().autoRotateSpeed = 0.18;
+  globeChart.controls().autoRotateSpeed = 0.08;
   globeChart.controls().enableDamping = true;
   globeChart.pointOfView({ lat: 8, lng: 103, altitude: 1.85 }, 1200);
   updateGlobeMarkers();
@@ -720,6 +725,7 @@ window.addEventListener("resize", () => {
 });
 
 resizeCanvas();
+cancelAnimationFrame(networkFrame);
 drawNetwork();
 initGlobe();
 updateClock();
@@ -730,4 +736,4 @@ initCharts();
 setDetail("airImport");
 setFeed(feedTemplates[0]);
 setInterval(updateClock, 1000);
-setInterval(refreshData, 6500);
+setInterval(refreshData, 15000);

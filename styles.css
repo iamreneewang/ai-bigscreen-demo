@@ -230,11 +230,7 @@ button {
   overflow: hidden;
 }
 
-.panel::before,
-.top-kpis article::before,
-.detail-card::before,
-.metric-grid article::before,
-.lane-card::before {
+.panel::before {
   content: "";
   position: absolute;
   top: 0;
@@ -242,7 +238,7 @@ button {
   width: 100%;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-  animation: scanLine 3.6s linear infinite;
+  animation: scanLine 8s linear infinite;
 }
 
 .left-panel,
