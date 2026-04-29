@@ -701,23 +701,21 @@ button {
   min-width: 0;
   width: 100%;
   color: var(--text);
-  font-size: 14px;
-  white-space: nowrap;
+  font-size: 13px;
   overflow: hidden;
-  line-height: 1.4;
-  height: 42px;
+  line-height: 1.28;
+  height: 72px;
 }
 
-.ticker-message {
-  position: absolute;
-  top: 10px;
-  left: 0;
+.feed-row {
   display: inline-flex;
   align-items: center;
-  width: max-content;
+  width: 100%;
   white-space: nowrap;
   color: var(--text);
-  will-change: transform;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 23px;
 }
 
 .feed-item {
@@ -744,11 +742,11 @@ button {
   color: rgba(101, 240, 219, 0.68);
 }
 
-.ticker-message b {
+.feed-row b {
   color: var(--yellow);
 }
 
-.ticker-message em {
+.feed-row em {
   color: var(--cyan);
   font-style: normal;
 }

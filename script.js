@@ -560,32 +560,11 @@ function renderFeedItem(item) {
   return `<span class="feed-item"><b>${item.time}</b><span class="feed-sep">/</span><span class="feed-type">${item.type}</span><span class="feed-sep">/</span><span>${item.text}</span></span>`;
 }
 
-function playFeed(item) {
-  feedText.innerHTML = `<span class="ticker-message">${renderFeedItem(item)}</span>`;
-  const message = feedText.querySelector(".ticker-message");
-  const containerWidth = feedText.clientWidth;
-  const messageWidth = message.offsetWidth;
-  const holdX = 0;
-  const exitX = -messageWidth - 24;
-
-  message.animate(
-    [
-      { transform: `translateX(${containerWidth}px)` },
-      { transform: `translateX(${holdX}px)`, offset: 0.42 },
-      { transform: `translateX(${holdX}px)`, offset: 0.72 },
-      { transform: `translateX(${exitX}px)` }
-    ],
-    { duration: 18000, easing: "linear", fill: "forwards" }
-  );
-}
-
-function setFeed(message) {
+function setFeed() {
   clearInterval(feedTimer);
-  playFeed(message);
-  feedTimer = setInterval(() => {
-    feedIndex = (feedIndex + 1) % feedTemplates.length;
-    playFeed(feedTemplates[feedIndex]);
-  }, 19000);
+  feedText.innerHTML = feedTemplates.slice(0, 3).map((item) => `
+    <div class="feed-row">${renderFeedItem(item)}</div>
+  `).join("");
 }
 
 function randomFeed() {
